@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フットケアサロン集客支援ツール｜AIプロンプト生成</title>
+<meta name="description" content="サロン情報を入力するだけで、リサーチ・コンテンツ制作・マーケティング・実行計画の4種のAIプロンプトを生成する静的ツール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <p class="eyebrow">SNS集客プロンプト・アトリエ</p>
+    <h1 class="site-title">フットケアサロン<br class="sp-only">集客支援ツール</h1>
+    <p class="site-lead">
+      サロンの基本情報を一度入力すれば、<strong>リサーチ／コンテンツ制作／マーケティング／実行計画</strong>の
+      4種のAIプロンプトが自動で組み上がります。生成された文章をコピーして、Claude や Gemini に貼り付けるだけ。
+      外部への送信は一切行いません。
+    </p>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ===== サロン情報 ===== -->
+  <section class="panel" id="config-panel" aria-labelledby="config-heading">
+    <div class="panel-head">
+      <h2 id="config-heading"><span class="head-num">基本情報</span>サロン情報の入力</h2>
+      <p class="panel-note">
+        初回は <code>salon-config.json</code> の内容を読み込みます。ここで上書きした内容はこのブラウザにのみ一時保存され、
+        4つのプロンプトへ即時反映されます。
+      </p>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label for="salonName">サロン名</label>
+        <input type="text" id="salonName" placeholder="例：フットケアサロン ○○" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="targetArea">対象エリア</label>
+        <input type="text" id="targetArea" placeholder="例：福岡市中央区・周辺エリア" autocomplete="off">
+      </div>
+      <div class="field field-wide">
+        <label for="strengths">サロンの強み <span class="hint">（1行に1つ）</span></label>
+        <textarea id="strengths" rows="3" placeholder="例：看護師資格を持つ施術者による医療的知見に基づくケア"></textarea>
+      </div>
+      <div class="field field-wide">
+        <label for="differentiators">差別化ポイント <span class="hint">（1行に1つ）</span></label>
+        <textarea id="differentiators" rows="3" placeholder="例：医療機関との連携実績がある"></textarea>
+      </div>
+      <div class="field">
+        <label for="priceRange">価格帯</label>
+        <input type="text" id="priceRange" placeholder="例：初回体験 5,500円〜" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="lineAccountName">公式LINEアカウント名</label>
+        <input type="text" id="lineAccountName" placeholder="例：@example_footcare" autocomplete="off">
+      </div>
+      <div class="field field-wide">
+        <label for="otherNotes">その他メモ <span class="hint">（客層・営業時間など自由記述）</span></label>
+        <textarea id="otherNotes" rows="2" placeholder="例：40〜60代女性が中心。立ち仕事の方が多い。"></textarea>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-primary" id="apply-btn">この内容でプロンプトを更新</button>
+      <button type="button" class="btn btn-ghost" id="reset-btn">salon-config.json の内容に戻す</button>
+      <span class="save-status" id="save-status" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <!-- ===== ワークフロー ===== -->
+  <section class="workflow" aria-label="活用の流れ">
+    <ol class="workflow-steps">
+      <li><span class="wf-num">一</span><span class="wf-label">リサーチ</span></li>
+      <li><span class="wf-num">二</span><span class="wf-label">コンテンツ制作</span></li>
+      <li><span class="wf-num">三</span><span class="wf-label">マーケティング</span></li>
+      <li><span class="wf-num">四</span><span class="wf-label">実行計画</span></li>
+    </ol>
+    <p class="workflow-note">①の出力を②③へ、①〜③の出力を④へ貼り付けて使う、リレー形式の設計です。</p>
+  </section>
+
+  <!-- ===== タブ ===== -->
+  <section class="panel" aria-label="プロンプト生成">
+    <div class="tabs" role="tablist" aria-label="プロンプトの種類">
+      <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tab-research" id="tabbtn-research" data-tab="research">
+        <span class="tab-num">①</span>リサーチ
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-content" id="tabbtn-content" data-tab="content" tabindex="-1">
+        <span class="tab-num">②</span>コンテンツ制作
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-marketing" id="tabbtn-marketing" data-tab="marketing" tabindex="-1">
+        <span class="tab-num">③</span>マーケティング
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-director" id="tabbtn-director" data-tab="director" tabindex="-1">
+        <span class="tab-num">④</span>統合ディレクター
+      </button>
+    </div>
+
+    <div class="tab-panel is-active" role="tabpanel" id="tab-research" aria-labelledby="tabbtn-research">
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <h3>リサーチチーム用プロンプト</h3>
+          <p>ペルソナ設計・悩みの言語化・地域競合分析を一度に依頼します。最初にこのプロンプトを実行してください。</p>
+        </div>
+        <div class="prompt-toolbar">
+          <span class="char-count" data-count-for="research"></span>
+          <button type="button" class="btn btn-copy" data-copy="research">コピー</button>
+        </div>
+        <pre class="prompt-body" id="prompt-research" tabindex="0"></pre>
+      </div>
+    </div>
+
+    <div class="tab-panel" role="tabpanel" id="tab-content" aria-labelledby="tabbtn-content" hidden>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <h3>コンテンツ制作チーム用プロンプト</h3>
+          <p>①で得たペルソナ・差別化情報を貼り付けたうえで、Threads/note投稿案とリール構成案を週次カレンダー形式で生成します。</p>
+        </div>
+        <div class="prompt-toolbar">
+          <span class="char-count" data-count-for="content"></span>
+          <button type="button" class="btn btn-copy" data-copy="content">コピー</button>
+        </div>
+        <pre class="prompt-body" id="prompt-content" tabindex="0"></pre>
+      </div>
+    </div>
+
+    <div class="tab-panel" role="tabpanel" id="tab-marketing" aria-labelledby="tabbtn-marketing" hidden>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <h3>マーケティングチーム用プロンプト</h3>
+          <p>SNS→公式LINE→予約のファネル設計、特典設計、初回予約のハードルを下げる施策を立案させます。</p>
+        </div>
+        <div class="prompt-toolbar">
+          <span class="char-count" data-count-for="marketing"></span>
+          <button type="button" class="btn btn-copy" data-copy="marketing">コピー</button>
+        </div>
+        <pre class="prompt-body" id="prompt-marketing" tabindex="0"></pre>
+      </div>
+    </div>
+
+    <div class="tab-panel" role="tabpanel" id="tab-director" aria-labelledby="tabbtn-director" hidden>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <h3>統合ディレクタープロンプト</h3>
+          <p>①〜③の出力結果を貼り付けると、「今週やるべきこと」形式の実行プランに変換します。優先順位と担当まで落とし込みます。</p>
+        </div>
+        <div class="prompt-toolbar">
+          <span class="char-count" data-count-for="director"></span>
+          <button type="button" class="btn btn-copy" data-copy="director">コピー</button>
+        </div>
+        <pre class="prompt-body" id="prompt-director" tabindex="0"></pre>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>本ツールは完全に静的なページとして動作し、入力内容が外部に送信されることはありません。</p>
+    <p class="footer-sub">プロンプトは Claude / Gemini 等の対話型AIに貼り付けてご利用ください。</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

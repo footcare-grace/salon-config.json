@@ -9,6 +9,7 @@
   "use strict";
 
   const STORAGE_KEY = "footcare-salon-config-v1";
+  const PASTE_STORAGE_KEY = "footcare-salon-pasted-v1";
 
   const EMPTY_CONFIG = {
     salonName: "",
@@ -84,6 +85,23 @@
     }
   }
 
+  function savePastedLocal() {
+    try {
+      localStorage.setItem(PASTE_STORAGE_KEY, JSON.stringify(readPasted()));
+    } catch (_) {}
+  }
+
+  function loadPastedLocal() {
+    try {
+      const raw = localStorage.getItem(PASTE_STORAGE_KEY);
+      if (!raw) return;
+      const p = JSON.parse(raw);
+      $("paste-research").value = p.research || "";
+      $("paste-content").value = p.content || "";
+      $("paste-marketing").value = p.marketing || "";
+    } catch (_) {}
+  }
+
   async function loadFileConfig() {
     try {
       const res = await fetch("salon-config.json", { cache: "no-store" });
@@ -98,7 +116,20 @@
 
   /* ---------- prompt templates ---------- */
 
-  function buildPrompts(cfg) {
+  function readPasted() {
+    return {
+      research: $("paste-research").value.trim(),
+      content: $("paste-content").value.trim(),
+      marketing: $("paste-marketing").value.trim(),
+    };
+  }
+
+  function pastedBlock(text, label) {
+    return text ? text : `(まだ貼り付けられていません。${label}の回答をこのページの入力欄に貼り付けると、ここに自動で反映されます)`;
+  }
+
+  function buildPrompts(cfg, pasted) {
+    pasted = pasted || { research: "", content: "", marketing: "" };
     const name = orPlaceholder(cfg.salonName, "サロン名");
     const area = orPlaceholder(cfg.targetArea, "対象エリア");
     const price = orPlaceholder(cfg.priceRange, "価格帯");
@@ -161,7 +192,7 @@ ${salonBlock}
 このプロンプトの直後に、リサーチチームが作成した「ペルソナシート」「悩みリスト」「差別化ポジショニング」を貼り付けます。制作するすべてのコンテンツは、そのペルソナの悩みの言葉と差別化メッセージを必ず反映させてください。
 
 ▼ここにリサーチ結果を貼り付け▼
-(①リサーチプロンプトの出力をここにペーストしてください)
+${pastedBlock(pasted.research, "①リサーチ")}
 ▲貼り付けここまで▲
 
 【依頼内容】
@@ -196,7 +227,7 @@ ${salonBlock}
 可能であれば、リサーチチームの出力(ペルソナ・悩みリスト・差別化ポジショニング)をこの下に貼り付けてください。貼り付けがない場合は、上記のサロン情報から妥当な仮説を置いて設計してください。
 
 ▼リサーチ結果があればここに貼り付け▼
-(任意)
+${pasted.research ? pasted.research : "(任意。①の回答を貼り付けると、ここに自動で反映されます)"}
 ▲貼り付けここまで▲
 
 【依頼内容】
@@ -227,16 +258,16 @@ ${salonBlock}
 ・サロン名:${name} / エリア:${area} / 価格帯:${price} / 公式LINE:${line}
 ・補足:${notes}
 
-▼①リサーチチームの出力をここに貼り付け▼
-
+▼①リサーチチームの出力▼
+${pastedBlock(pasted.research, "①リサーチ")}
 ▲貼り付けここまで▲
 
-▼②コンテンツ制作チームの出力をここに貼り付け▼
-
+▼②コンテンツ制作チームの出力▼
+${pastedBlock(pasted.content, "②コンテンツ制作")}
 ▲貼り付けここまで▲
 
-▼③マーケティングチームの出力をここに貼り付け▼
-
+▼③マーケティングチームの出力▼
+${pastedBlock(pasted.marketing, "③マーケティング")}
 ▲貼り付けここまで▲
 
 【依頼内容】
@@ -270,7 +301,8 @@ ${salonBlock}
 
   function renderPrompts() {
     const cfg = readForm();
-    const prompts = buildPrompts(cfg);
+    const pasted = readPasted();
+    const prompts = buildPrompts(cfg, pasted);
 
     for (const key of ["research", "content", "marketing", "director"]) {
       const pre = $(`prompt-${key}`);
@@ -366,7 +398,15 @@ ${salonBlock}
     fileConfig = (await loadFileConfig()) || { ...EMPTY_CONFIG };
     const local = loadLocal();
     fillForm(local || fileConfig);
+    loadPastedLocal();
     renderPrompts();
+
+    ["paste-research", "paste-content", "paste-marketing"].forEach((id) => {
+      $(id).addEventListener("input", () => {
+        savePastedLocal();
+        renderPrompts();
+      });
+    });
 
     if (local) {
       $("save-status").textContent = "このブラウザに保存された内容を読み込みました";

@@ -120,7 +120,7 @@
       <div class="prompt-card">
         <div class="prompt-head">
           <h3>コンテンツ制作チーム用プロンプト</h3>
-          <p>①で得たペルソナ・差別化情報を貼り付けたうえで、Threads/note投稿案とリール構成案を週次カレンダー形式で生成します。</p>
+          <p>①で得たペルソナ・差別化情報を前提に、Threads/note投稿案とリール構成案を週次カレンダー形式で生成します。①の回答は「④統合ディレクター」タブの入力欄に貼り付けると、ここへ自動反映されます。</p>
         </div>
         <div class="prompt-toolbar">
           <span class="char-count" data-count-for="content"></span>
@@ -134,7 +134,7 @@
       <div class="prompt-card">
         <div class="prompt-head">
           <h3>マーケティングチーム用プロンプト</h3>
-          <p>SNS→公式LINE→予約のファネル設計、特典設計、初回予約のハードルを下げる施策を立案させます。</p>
+          <p>SNS→公式LINE→予約のファネル設計、特典設計、初回予約のハードルを下げる施策を立案させます。①の回答は「④統合ディレクター」タブの入力欄に貼り付けると、ここへ自動反映されます。</p>
         </div>
         <div class="prompt-toolbar">
           <span class="char-count" data-count-for="marketing"></span>
@@ -148,8 +148,26 @@
       <div class="prompt-card">
         <div class="prompt-head">
           <h3>統合ディレクタープロンプト</h3>
-          <p>①〜③の出力結果を貼り付けると、「今週やるべきこと」形式の実行プランに変換します。優先順位と担当まで落とし込みます。</p>
+          <p>①〜③をClaude/Geminiで実行して得た回答を、下の入力欄に貼り付けてください。プロンプト本文に自動的に反映されます(貼り付けは任意です)。</p>
         </div>
+
+        <div class="paste-inputs">
+          <p class="paste-inputs-label">STEP 1 ｜ ①②③の回答をここに貼り付けてください</p>
+          <div class="paste-field">
+            <label for="paste-research">①リサーチの回答 <span class="hint">(任意)</span></label>
+            <textarea id="paste-research" rows="4" placeholder="①のプロンプトをAIで実行して得た回答をここに貼り付け"></textarea>
+          </div>
+          <div class="paste-field">
+            <label for="paste-content">②コンテンツ制作の回答 <span class="hint">(任意)</span></label>
+            <textarea id="paste-content" rows="4" placeholder="②のプロンプトをAIで実行して得た回答をここに貼り付け"></textarea>
+          </div>
+          <div class="paste-field">
+            <label for="paste-marketing">③マーケティングの回答 <span class="hint">(任意)</span></label>
+            <textarea id="paste-marketing" rows="4" placeholder="③のプロンプトをAIで実行して得た回答をここに貼り付け"></textarea>
+          </div>
+        </div>
+
+        <p class="paste-inputs-label step2-label">STEP 2 ｜ 下のプレビューが自動更新されます(この枠は編集不可・コピー専用)</p>
         <div class="prompt-toolbar">
           <span class="char-count" data-count-for="director"></span>
           <button type="button" class="btn btn-copy" data-copy="director">コピー</button>

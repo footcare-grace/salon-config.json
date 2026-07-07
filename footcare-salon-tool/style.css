@@ -1,0 +1,481 @@
+/* =========================================================
+   フットケアサロン集客支援ツール
+   Palette : off-white #F7F5F2 / silver #C0C0C0 / deep green #1B3B2F
+   Type    : Shippori Mincho (display) / Zen Kaku Gothic New (body)
+   ========================================================= */
+
+:root {
+  --bg:        #F7F5F2;
+  --surface:   #FDFCFA;
+  --ink:       #2E2C28;
+  --ink-soft:  #6E6A62;
+  --silver:    #C0C0C0;
+  --silver-lt: #DAD8D3;
+  --green:     #1B3B2F;
+  --green-mid: #2E5946;
+  --green-bg:  #EEF2EF;
+  --radius:    6px;
+  --font-mincho: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-gothic: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  line-height: 1.85;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.88em;
+  background: var(--green-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--green);
+}
+
+/* ---------- header ---------- */
+
+.site-header {
+  padding: 72px 0 56px;
+  border-bottom: 1px solid var(--silver-lt);
+  background:
+    linear-gradient(180deg, rgba(27,59,47,0.035), rgba(27,59,47,0) 60%),
+    var(--bg);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--green-mid);
+  font-weight: 500;
+}
+
+.site-title {
+  margin: 0 0 26px;
+  font-family: var(--font-mincho);
+  font-weight: 500;
+  font-size: clamp(28px, 5vw, 42px);
+  letter-spacing: 0.08em;
+  color: var(--green);
+  line-height: 1.4;
+}
+
+.site-lead {
+  max-width: 620px;
+  margin: 0 auto;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  text-align: left;
+}
+.site-lead strong { color: var(--green); font-weight: 500; }
+
+.sp-only { display: none; }
+
+/* ---------- panels ---------- */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--silver-lt);
+  border-radius: var(--radius);
+  padding: 40px 44px 44px;
+  margin: 48px 0;
+  box-shadow: 0 1px 0 rgba(27,59,47,0.03);
+}
+
+.panel-head h2 {
+  margin: 0 0 10px;
+  font-family: var(--font-mincho);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  color: var(--green);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.head-num {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  border: 1px solid var(--silver);
+  border-radius: 999px;
+  padding: 3px 12px 3px 14px;
+  font-family: var(--font-gothic);
+  white-space: nowrap;
+}
+
+.panel-note {
+  margin: 0 0 30px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------- form ---------- */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 28px;
+}
+
+.field { display: flex; flex-direction: column; }
+.field-wide { grid-column: 1 / -1; }
+
+.field label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--green);
+  margin-bottom: 7px;
+}
+.field .hint { font-weight: 400; color: var(--ink-soft); letter-spacing: 0; }
+
+.field input,
+.field textarea {
+  font-family: var(--font-gothic);
+  font-size: 14.5px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--silver-lt);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  line-height: 1.7;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field textarea { resize: vertical; }
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(46,89,70,0.12);
+}
+
+.form-actions {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.save-status {
+  font-size: 12.5px;
+  color: var(--green-mid);
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  font-family: var(--font-gothic);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius);
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  border: 1px solid transparent;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--green-mid);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #F7F5F2;
+}
+.btn-primary:hover { background: var(--green-mid); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--green);
+  border-color: var(--silver);
+}
+.btn-ghost:hover { border-color: var(--green-mid); background: var(--green-bg); }
+
+.btn-copy {
+  background: transparent;
+  color: var(--green);
+  border-color: var(--silver);
+  padding: 7px 20px;
+  font-size: 13px;
+}
+.btn-copy:hover { background: var(--green); color: #F7F5F2; border-color: var(--green); }
+.btn-copy.is-copied { background: var(--green-mid); color: #F7F5F2; border-color: var(--green-mid); }
+
+/* ---------- workflow ---------- */
+
+.workflow {
+  margin: 56px 0;
+  text-align: center;
+}
+
+.workflow-steps {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.workflow-steps li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  padding: 0 34px;
+}
+
+/* silver connecting rule */
+.workflow-steps li + li::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 21px;
+  width: 44px;
+  height: 1px;
+  background: var(--silver);
+}
+
+.wf-num {
+  font-family: var(--font-mincho);
+  font-size: 17px;
+  color: var(--green);
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--silver);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+}
+
+.wf-label {
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+.workflow-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---------- tabs ---------- */
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--silver-lt);
+  margin: -8px -8px 32px;
+  overflow-x: auto;
+}
+
+.tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-gothic);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  padding: 14px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--green); }
+.tab:focus-visible { outline: 2px solid var(--green-mid); outline-offset: -2px; }
+
+.tab.is-active {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+.tab-num {
+  font-family: var(--font-mincho);
+  margin-right: 6px;
+}
+
+.tab-panel[hidden] { display: none; }
+
+/* ---------- prompt card ---------- */
+
+.prompt-head h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-mincho);
+  font-weight: 500;
+  font-size: 19px;
+  letter-spacing: 0.05em;
+  color: var(--green);
+}
+
+.prompt-head p {
+  margin: 0 0 24px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.paste-inputs {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 22px 24px;
+  background: var(--green-bg);
+  border: 1px solid var(--silver-lt);
+  border-radius: var(--radius);
+}
+
+.paste-field { display: flex; flex-direction: column; }
+
+.paste-field label {
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.paste-field .hint { font-weight: 400; color: var(--ink-soft); }
+
+.paste-field textarea {
+  font-family: var(--font-gothic);
+  font-size: 13.5px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--silver-lt);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.paste-field textarea:focus {
+  outline: none;
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(46,89,70,0.12);
+}
+
+.prompt-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.char-count {
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+
+.prompt-body {
+  margin: 0;
+  background: #FBFAF8;
+  border: 1px solid var(--silver-lt);
+  border-left: 3px solid var(--green);
+  border-radius: var(--radius);
+  padding: 26px 28px;
+  font-family: var(--font-gothic);
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 560px;
+  overflow-y: auto;
+}
+.prompt-body:focus-visible {
+  outline: 2px solid var(--green-mid);
+  outline-offset: 2px;
+}
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--silver-lt);
+  margin-top: 72px;
+  padding: 40px 0 56px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+.site-footer p { margin: 0 0 6px; }
+.footer-sub { font-size: 12px; }
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translate(-50%, 16px);
+  background: var(--green);
+  color: #F7F5F2;
+  font-size: 13.5px;
+  letter-spacing: 0.05em;
+  padding: 12px 28px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 680px) {
+  body { font-size: 15px; }
+  .sp-only { display: inline; }
+
+  .site-header { padding: 52px 0 40px; }
+  .panel { padding: 28px 22px 32px; margin: 32px 0; }
+
+  .form-grid { grid-template-columns: 1fr; gap: 18px; }
+
+  .workflow-steps li { padding: 0 14px; }
+  .workflow-steps li + li::before { left: -12px; width: 24px; }
+  .wf-num { width: 36px; height: 36px; font-size: 15px; }
+  .wf-label { font-size: 11px; }
+
+  .prompt-body { padding: 20px 16px; font-size: 13px; }
+  .form-actions { flex-direction: column; align-items: stretch; }
+  .form-actions .btn { width: 100%; }
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
